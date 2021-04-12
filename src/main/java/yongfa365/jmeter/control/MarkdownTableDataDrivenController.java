@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.control.WhileController;
 import org.apache.jmeter.engine.event.LoopIterationEvent;
 import org.apache.jmeter.samplers.Sampler;
+import org.apache.jmeter.threads.JMeterContext;
 import org.apache.jmeter.threads.JMeterContextService;
 import org.apache.jmeter.threads.JMeterVariables;
 import org.slf4j.Logger;
@@ -54,6 +55,13 @@ public class MarkdownTableDataDrivenController extends WhileController {
         // 列变量赋值当前行的值
         for (int i = 0; i < line.length; i++) {
             vars.put(heads[i].trim(), line[i].trim());
+        }
+
+        // 用例出错后是否执行下一个
+        if ("false".equalsIgnoreCase(vars.get("JMeterThread.last_sample_ok"))) {
+            if (JMeterContext.TestLogicalAction.CONTINUE.equals(JMeterContextService.getContext().getTestLogicalAction())) {
+                vars.put("JMeterThread.last_sample_ok", "true");
+            }
         }
 
         return super.next();

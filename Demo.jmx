@@ -28,6 +28,35 @@
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
       </ThreadGroup>
       <hashTree>
+        <yongfa365.jmeter.control.MarkdownTableDataDrivenController guiclass="yongfa365.jmeter.control.gui.MarkdownTableDataDrivenControllerGui" testclass="yongfa365.jmeter.control.MarkdownTableDataDrivenController" testname="Calc" enabled="true">
+          <stringProp name="Markdown.Data"> a     | b     | c     | remark&#xd;
+ 1     | 2     | 3     | ok&#xd;
+ -1    | 2     | 1     | ok&#xd;
+ 1     | 2     | 4     | no ok&#xd;
+ -1    | -1    | -2    | ok&#xd;
+ 1     | -2    | -1    | ok</stringProp>
+        </yongfa365.jmeter.control.MarkdownTableDataDrivenController>
+        <hashTree>
+          <DebugSampler guiclass="TestBeanGUI" testclass="DebugSampler" testname="add test : ${a}+${b}=${c}  ${remark}" enabled="true">
+            <boolProp name="displayJMeterProperties">false</boolProp>
+            <boolProp name="displayJMeterVariables">true</boolProp>
+            <boolProp name="displaySystemProperties">false</boolProp>
+          </DebugSampler>
+          <hashTree>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
+              <stringProp name="cacheKey">false</stringProp>
+              <stringProp name="filename"></stringProp>
+              <stringProp name="parameters"></stringProp>
+              <stringProp name="script">assert ${a}+${b} == ${c}
+
+
+//uncheckd &quot;Cache compiled script if available&quot; in this UI
+</stringProp>
+              <stringProp name="scriptLanguage">groovy</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
         <yongfa365.jmeter.control.MarkdownTableDataDrivenController guiclass="yongfa365.jmeter.control.gui.MarkdownTableDataDrivenControllerGui" testclass="yongfa365.jmeter.control.MarkdownTableDataDrivenController" testname="Markdown Table Data-driven Controller" enabled="true">
           <stringProp name="Markdown.Data"> username     | password    | remark&#xd;
  yongfa365    | xx1x        | valid data&#xd;
