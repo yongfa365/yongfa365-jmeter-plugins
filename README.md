@@ -42,3 +42,8 @@ username     | password | remark
  #yongfa111     | 123455| username not exist
  yongfa222    | xx3x        | password not exist
 ```
+
+
+# jsonPath Assertion
+![](JsonPathAssertion.png)
+![](JsonPathAssertion2.png)
