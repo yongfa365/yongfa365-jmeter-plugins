@@ -25,9 +25,6 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
     private static final long serialVersionUID = 123123123123456L;
     public static final String JSONPATH = "JSON_PATH";
     public static final String EXPECTEDVALUE = "EXPECTED_VALUE";
-    public static final String JSONVALIDATION = "JSONVALIDATION";
-    public static final String EXPECT_NULL = "EXPECT_NULL";
-    public static final String INVERT = "INVERT";
     public static final String ISREGEX = "ISREGEX";
 
     public static final String IS_USE_MATCH = "IS_USE_MATCH";
@@ -36,7 +33,7 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
     public static final String IS_ALL_MATCH = "IS_ALL_MATCH";
     public static final String IS_ANY_MATCH = "IS_ANY_MATCH";
 
-    private static final ThreadLocal<DecimalFormat> decimalFormatter =
+    private static final ThreadLocal<DecimalFormat> DECIMAL_FORMATTER =
             ThreadLocal.withInitial(JSONPathAssertionPlus::createDecimalFormat);
 
     private static DecimalFormat createDecimalFormat() {
@@ -60,11 +57,6 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
 
     public void setExpectedValue(String expectedValue) {
         setProperty(EXPECTEDVALUE, expectedValue);
-    }
-
-
-    public boolean isJsonValidationBool() {
-        return getPropertyAsBoolean(JSONVALIDATION);
     }
 
 
@@ -99,10 +91,6 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
 
     private void doAssert(String jsonString) {
         Object value = JsonPath.read(jsonString, getJsonPath());
-
-        if (!isJsonValidationBool()) {
-            return;
-        }
 
         if (isAsc()) {
             assertIsAsc(value);
@@ -229,7 +217,7 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
             //noinspection unchecked
             str = new JSONObject((Map<String, ?>) subj).toJSONString();
         } else if (subj instanceof Double || subj instanceof Float) {
-            str = decimalFormatter.get().format(subj);
+            str = DECIMAL_FORMATTER.get().format(subj);
         } else {
             str = subj.toString();
         }
@@ -243,6 +231,6 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
 
     @Override
     public void threadFinished() {
-        decimalFormatter.remove();
+        DECIMAL_FORMATTER.remove();
     }
 }
