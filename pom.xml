@@ -48,7 +48,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <outputDirectory>D:\Tools\apache-jmeter\lib\ext</outputDirectory>
+                    <outputDirectory>E:\共享软件2\apache-jmeter-5.4.1\lib\ext</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
