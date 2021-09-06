@@ -191,6 +191,26 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
     public AssertionResult getResult(SampleResult samplerResult) {
         AssertionResult result = new AssertionResult(getName());
         String responseData = samplerResult.getResponseDataAsString();
+/*        System.out.println("***************************start*********************************");
+        System.out.println("threadName:"+samplerResult.getThreadName());
+        System.out.println("label:"+samplerResult.getSampleLabel());
+        System.out.println("url:"+samplerResult.getUrlAsString());
+        System.out.println("responseCode:"+samplerResult.getResponseCode());
+        System.out.println("responseMessage:"+samplerResult.getResponseMessage());
+        System.out.println("FirstAssertionFailureMessage:"+samplerResult.getFirstAssertionFailureMessage());
+        System.out.println("errorCount:"+samplerResult.getErrorCount());
+        System.out.println("*****************************end*******************************");
+
+        log.info("***************************start*********************************");
+        log.info("threadName:"+samplerResult.getThreadName());
+        log.info("label:"+samplerResult.getSampleLabel());
+        log.info("url:"+samplerResult.getUrlAsString());
+        log.info("responseCode:"+samplerResult.getResponseCode());
+        log.info("responseMessage:"+samplerResult.getResponseMessage());
+        log.info("FirstAssertionFailureMessage:"+samplerResult.getFirstAssertionFailureMessage());
+        log.info("errorCount:"+samplerResult.getErrorCount());
+        log.info("*****************************end*******************************");*/
+
         if (responseData.isEmpty()) {
             return result.setResultForNull();
         }

@@ -1,5 +1,6 @@
 package yongfa365.jmeter.lister;
 
+import net.minidev.json.JSONValue;
 import org.apache.commons.collections4.EnumerationUtils;
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.apache.commons.lang3.StringUtils;
@@ -64,7 +65,7 @@ public class ReportTreeGui extends AbstractVisualizer
     private static final String VIEWERS_ORDER =
             JMeterUtils.getPropDefault("view.results.tree.renderers_order", ""); // $NON-NLS-1$ //$NON-NLS-2$
 
-    private static final int REFRESH_PERIOD = JMeterUtils.getPropDefault("jmeter.gui.refresh_period", 5000);
+    private static final int REFRESH_PERIOD = JMeterUtils.getPropDefault("jmeter.gui.refresh_period", 500);
 
     private static final ImageIcon imageSuccess = JMeterUtils.getImage(
             JMeterUtils.getPropDefault("viewResultsTree.success",  //$NON-NLS-1$
@@ -88,6 +89,15 @@ public class ReportTreeGui extends AbstractVisualizer
     private JCheckBox autoScrollCB;
     private final java.util.Queue<SampleResult> buffer;
     private boolean dataChanged;
+
+    /**
+     * 用于尽量控制一次jmeter测试的所有请求都被add后触发updateGui函数（上一个请求与下一个请求间隔小于3s则表示为同一次测试）
+     */
+    private long collectTime = System.currentTimeMillis();
+    /**
+     * 间隔时间（单位毫秒）
+     */
+    private long betTime = 3000;
 
     /**
      * Constructor
@@ -119,9 +129,11 @@ public class ReportTreeGui extends AbstractVisualizer
      */
     @Override
     public void add(final SampleResult sample) {
+
         synchronized (buffer) {
             buffer.add(sample);
             dataChanged = true;
+            collectTime = System.currentTimeMillis();
         }
     }
 
@@ -129,6 +141,9 @@ public class ReportTreeGui extends AbstractVisualizer
      * Update the visualizer with new data.
      */
     private void updateGui() {
+        if ((System.currentTimeMillis() - collectTime) < betTime) {
+            return;
+        }
         TreePath selectedPath = null;
         Object oldSelectedElement;
         Set<Object> oldExpandedElements;
@@ -137,69 +152,67 @@ public class ReportTreeGui extends AbstractVisualizer
             if (!dataChanged) {
                 return;
             }
-            try {
-                final Enumeration<TreePath> expandedElements = jTree.getExpandedDescendants(new TreePath(root));
-                oldExpandedElements = extractExpandedObjects(expandedElements);
-                oldSelectedElement = getSelectedObject();
-                root.removeAllChildren();
-                //添加threadName一级的名称
-                Map<String, DefaultMutableTreeNode> threadNameMap = new HashMap<>();
-                for (SampleResult sampler : buffer) {
-                    String threadName = sampler.getThreadName();
-                    if (threadNameMap.containsKey(threadName)) {
-                        boolean isSuccess = sampler.isSuccessful();
-                        if (!isSuccess) {
-                            ((SampleResult) threadNameMap.get(threadName).getUserObject()).setSuccessful(false);
-                        }
-                    } else {
-                        SampleResult sampleResult = new SampleResult();
-                        sampleResult.setSampleLabel(threadName);
-                        sampleResult.setSuccessful(sampler.isSuccessful());
-                        DefaultMutableTreeNode currNode = new SearchableTreeNode(sampleResult, null);
-                        threadNameMap.put(threadName, currNode);
+            final Enumeration<TreePath> expandedElements = jTree.getExpandedDescendants(new TreePath(root));
+            oldExpandedElements = extractExpandedObjects(expandedElements);
+            oldSelectedElement = getSelectedObject();
+            root.removeAllChildren();
+            //添加threadName一级的名称
+            Map<String, DefaultMutableTreeNode> threadNameMap = new HashMap<>();
+            for (SampleResult sampler : buffer) {
+                String threadName = sampler.getThreadName();
+                if (threadNameMap.containsKey(threadName)) {
+                    boolean isSuccess = sampler.isSuccessful();
+                    if (!isSuccess) {
+                        ((SampleResult) threadNameMap.get(threadName).getUserObject()).setSuccessful(false);
                     }
+                } else {
+                    SampleResult sampleResult = new SampleResult();
+                    sampleResult.setSampleLabel(threadName);
+                    sampleResult.setSuccessful(sampler.isSuccessful());
+                    DefaultMutableTreeNode currNode = new SearchableTreeNode(sampleResult, null);
+                    threadNameMap.put(threadName, currNode);
                 }
-                //将threadNameMap设置为ROOT下面一级
-                threadNameMap.forEach((s, defaultMutableTreeNode) -> {
-                    treeModel.insertNodeInto(defaultMutableTreeNode, root, root.getChildCount());
-                });
-
-                for (SampleResult sampler : buffer) {
-                    SampleResult res = sampler;
-                    // Add sample
-                    DefaultMutableTreeNode currNode = new SearchableTreeNode(res, treeModel);
-                    DefaultMutableTreeNode parent = threadNameMap.get(sampler.getThreadName());
-                    treeModel.insertNodeInto(currNode, parent, parent.getChildCount());
-                    java.util.List<TreeNode> path = new ArrayList<>(Arrays.asList(parent, currNode));
-                    selectedPath = checkExpandedOrSelected(path,
-                            res, oldSelectedElement,
-                            oldExpandedElements, newExpandedPaths, selectedPath);
-                    TreePath potentialSelection = addSubResults(currNode, res, path, oldSelectedElement, oldExpandedElements, newExpandedPaths);
-                    if (potentialSelection != null) {
-                        selectedPath = potentialSelection;
-                    }
-                    // Add any assertion that failed as children of the sample node
-                    AssertionResult[] assertionResults = res.getAssertionResults();
-                    int assertionIndex = currNode.getChildCount();
-                    for (AssertionResult assertionResult : assertionResults) {
-                        if (assertionResult.isFailure() || assertionResult.isError()) {
-                            DefaultMutableTreeNode assertionNode = new SearchableTreeNode(assertionResult, treeModel);
-                            treeModel.insertNodeInto(assertionNode, currNode, assertionIndex++);
-                            selectedPath = checkExpandedOrSelected(path,
-                                    assertionResult, oldSelectedElement,
-                                    oldExpandedElements, newExpandedPaths, selectedPath,
-                                    assertionNode);
-                        }
-                    }
-                }
-                treeModel.nodeStructureChanged(root);
-                dataChanged = false;
-
-                //将结果输出到文件
-                outPutResultToFile(root);
-            } finally {
-                this.buffer.clear();
             }
+
+            //将threadNameMap设置为ROOT下面一级
+            threadNameMap.forEach((s, defaultMutableTreeNode) -> {
+                treeModel.insertNodeInto(defaultMutableTreeNode, root, root.getChildCount());
+            });
+
+            while (buffer.size() > 0) {
+                SampleResult sampler = buffer.poll();
+
+                // Add sample
+                DefaultMutableTreeNode currNode = new SearchableTreeNode(sampler, treeModel);
+                DefaultMutableTreeNode parent = threadNameMap.get(sampler.getThreadName());
+                treeModel.insertNodeInto(currNode, parent, parent.getChildCount());
+                java.util.List<TreeNode> path = new ArrayList<>(Arrays.asList(parent, currNode));
+                selectedPath = checkExpandedOrSelected(path,
+                        sampler, oldSelectedElement,
+                        oldExpandedElements, newExpandedPaths, selectedPath);
+                TreePath potentialSelection = addSubResults(currNode, sampler, path, oldSelectedElement, oldExpandedElements, newExpandedPaths);
+                if (potentialSelection != null) {
+                    selectedPath = potentialSelection;
+                }
+                // Add any assertion that failed as children of the sample node
+                AssertionResult[] assertionResults = sampler.getAssertionResults();
+                int assertionIndex = currNode.getChildCount();
+                for (AssertionResult assertionResult : assertionResults) {
+                    if (assertionResult.isFailure() || assertionResult.isError()) {
+                        DefaultMutableTreeNode assertionNode = new SearchableTreeNode(assertionResult, treeModel);
+                        treeModel.insertNodeInto(assertionNode, currNode, assertionIndex++);
+                        selectedPath = checkExpandedOrSelected(path,
+                                assertionResult, oldSelectedElement,
+                                oldExpandedElements, newExpandedPaths, selectedPath,
+                                assertionNode);
+                    }
+                }
+            }
+
+            treeModel.nodeStructureChanged(root);
+            dataChanged = false;
+            //将结果输出到文件
+            outPutResultToFile(root);
         }
 
         if (root.getChildCount() == 1) {
@@ -226,22 +239,18 @@ public class ReportTreeGui extends AbstractVisualizer
             //获取项目跟目录
             String projectPath = System.getProperty("user.dir");
             //遍历项目所有java文件
-            File file = new File(projectPath + "/ReportVO.html");
+            File file = new File("D:\\Sources.git\\yongfa365-jmeter-plugins\\src\\main\\resources\\templates\\data.js");
 
-            ReportVO reportVO = new ReportVO();
+            ReportVO reportVOs = getReportVOs(root);
 
-            getReportVOs(root, reportVO);
-
-            StringBuilder stringBuilder = new StringBuilder();
-            getHeadBody(stringBuilder);
-            getReportVOHtml(reportVO, stringBuilder);
-            getTailBody(stringBuilder);
-            System.out.println(stringBuilder.toString());
+            String reportVOsStr = JSONValue.toJSONString(reportVOs);
+            System.out.println(reportVOsStr);
+            log.info(reportVOsStr);
 
             // 创建基于文件的输出流
             fos = new FileOutputStream(file);
             // 把数据写入到输出流
-            fos.write(stringBuilder.toString().getBytes());
+            fos.write(("let data = " + reportVOsStr).getBytes());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -256,156 +265,75 @@ public class ReportTreeGui extends AbstractVisualizer
         }
     }
 
-    public void getHeadBody(StringBuilder stringBuilder) {
-        String str = "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "<head>\n" +
-                "\t<meta charset=\"utf-8\"> \n" +
-                "\t<title>Jmeter-Test</title>\n" +
-                "\t<link rel=\"stylesheet\" href=\"https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css\">\n" +
-                "\t<script src=\"https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js\"></script>\n" +
-                "\t<script src=\"https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js\"></script>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "\n" +
-                "<div class=\"panel-group\" id=\"#ROOT\">";
-        stringBuilder.append(str);
-
-    }
-
-    public void getTailBody(StringBuilder stringBuilder) {
-        String str = "</div>\n" +
-                "\n" +
-                "</body>\n" +
-                "</html>";
-        stringBuilder.append(str);
-    }
-
-    public void getReportVOHtml(ReportVO reportVO, StringBuilder stringBuilder) {
-        List<ReportVO> childs = reportVO.getChilds();
-        String id = reportVO.getId();
-        String name = reportVO.getName();
-        if (!"ROOT".equals(id)) {
-            String head = getHeadContext(id);
-            stringBuilder.append(head);
-        }
-        if (childs != null && childs.size() > 0) {
-            for (ReportVO childReportVO : childs) {
-                if (childReportVO.getChilds() != null && childReportVO.getChilds().size() > 0) {
-                    String childStr = getTitle(childReportVO.getParentId(), childReportVO.getId(), childReportVO.getName(), childReportVO.isSuccessful());
-                    stringBuilder.append(childStr);
-                }
-                getReportVOHtml(childReportVO, stringBuilder);
-            }
-        } else {
-            String nameStr = "";
-            if (reportVO.isSuccessful()) {
-                nameStr = "<span style=\"color:green\" class=\"glyphicon glyphicon-ok\"> " + name + "</span>\n";
-            } else {
-                nameStr = "<span style=\"color:red\" class=\"glyphicon glyphicon-remove\"> " + name + "</span>\n";
-            }
-            stringBuilder.append(nameStr);
-        }
-        if (!"ROOT".equals(id)) {
-            String tail = getTailContext();
-            stringBuilder.append(tail);
-        }
-    }
-
-    /**
-     * 獲取頭部內容
-     *
-     * @param id
-     * @return
-     */
-    private String getHeadContext(String id) {
-        return "<div id=\"" + id + "\" class=\"panel-collapse collapse in\">\n" +
-                "<div class=\"panel-body\">\n";
-    }
-
-    private String getTitle(String parentId, String id, String name, boolean isSuccess) {
-        String s = "<div class=\"panel-heading\">\n" +
-                "<h4 class=\"panel-title\">\n" +
-                "<a data-toggle=\"collapse\" data-parent=\"#" + parentId + "\" \n" +
-                "   href=\"#" + id + "\">\n";
-        if (isSuccess) {
-            s += "<span style=\"color:green\" class=\"glyphicon glyphicon-ok\"> " + name + "</span>\n";
-        } else {
-            s += "<span style=\"color:red\" class=\"glyphicon glyphicon-remove\"> " + name + "</span>\n";
-        }
-        s += "</a>\n" +
-                "</h4>\n" +
-                "</div>";
-        return s;
-    }
-
-    /**
-     * 獲取尾部內容
-     *
-     * @return
-     */
-    private String getTailContext() {
-        return "</div>\n" +
-                "</div>";
-    }
-
     /**
      * 获取需要输出的文件
      *
-     * @param parent
-     * @param reportVO
+     * @param root
      * @return
      */
-    private void getReportVOs(DefaultMutableTreeNode parent, ReportVO reportVO) {
+    private ReportVO getReportVOs(DefaultMutableTreeNode root) {
+        ReportVO reportVO = new ReportVO();
         //将结果输出到文件
-        int childCount = parent.getChildCount();
+        int childCount = root.getChildCount();
+        List<ReportVO.ThreadGroup> items = new ArrayList<>();
+        reportVO.items = items;
+        ReportVO.Summary summary = new ReportVO.Summary();
+        reportVO.summary = summary;
         if (childCount > 0) {
-            if (reportVO.getId() == null) {
-                reportVO.setId("ROOT");
-                reportVO.setParentId("body");
-            }
-            List<ReportVO> reportVOS = new ArrayList<>();
-            reportVO.setChilds(reportVOS);
+            Set<String> featureSet = new HashSet<>();
+            //Thread
             for (int i = 0; i < childCount; i++) {
-                ReportVO childReportVO = new ReportVO();
-                reportVOS.add(childReportVO);
-                if ("ROOT".equals(reportVO.getId())) {
-                    childReportVO.setId("reportVO-SampleResultIndex" + i);
-                } else {
-                    childReportVO.setId(reportVO.getId() + i);
-                }
-                childReportVO.setParentId(reportVO.getId());
-                DefaultMutableTreeNode child = (DefaultMutableTreeNode) parent.getChildAt(i);
-                Object userObject = child.getUserObject();
-                if (userObject instanceof SampleResult) {
-                    SampleResult sampleResult = (SampleResult) userObject;
-                    //名称
-                    String sampleLabel = sampleResult.getSampleLabel();
-                    //是否成功
-                    boolean successful = sampleResult.isSuccessful();
-                    String errorMsg = null;
-                    if (!successful) {
-                        //错误信息
-                        errorMsg = sampleResult.getFirstAssertionFailureMessage();
-                    }
-                    childReportVO.setName(sampleLabel);
-                    childReportVO.setSuccessful(successful);
-                    childReportVO.setErrorMsg(errorMsg);
+                DefaultMutableTreeNode threadTreeNode = (DefaultMutableTreeNode) root.getChildAt(i);
+                SampleResult threadTreeNodeUserObject = (SampleResult) threadTreeNode.getUserObject();
+                ReportVO.ThreadGroup threadGroup = new ReportVO.ThreadGroup();
+                threadGroup.Name = threadTreeNodeUserObject.getSampleLabel();
+                threadGroup.HasError = false;
+                items.add(threadGroup);
+                ArrayList<ReportVO.Record> steps = new ArrayList<>();
+                threadGroup.Steps = steps;
 
-                    if (child.getChildCount() > 0) {
-                        getReportVOs(child, childReportVO);
+                //Record
+                int threadChildCount = threadTreeNode.getChildCount();
+                summary.RequestCount += threadChildCount;
+                if (threadChildCount > 0) {
+                    for (int j = 0; j < threadChildCount; j++) {
+                        DefaultMutableTreeNode recordTreeNode = (DefaultMutableTreeNode) threadTreeNode.getChildAt(j);
+                        SampleResult recordTreeNodeUserObject = (SampleResult) recordTreeNode.getUserObject();
+                        ReportVO.Record record = new ReportVO.Record();
+                        steps.add(record);
+                        record.label = recordTreeNodeUserObject.getSampleLabel();
+                        featureSet.add(record.label);
+                        record.HasError = false;
+                        record.responseCode = recordTreeNodeUserObject.getResponseCode();
+                        record.responseMessage = recordTreeNodeUserObject.getResponseMessage();
+                        String urlAsString = recordTreeNodeUserObject.getUrlAsString();
+                        record.URL = urlAsString;
+
+                        if (urlAsString != null) {
+                            summary.UrlCount++;
+                        }
+
+                        if (urlAsString != null && urlAsString.contains("mock")) {
+                            summary.MockCount++;
+                        }
+
+                        //異常
+                        int errorCount = recordTreeNode.getChildCount();
+                        summary.ErrorCount += errorCount;
+                        if (errorCount > 0) {
+                            DefaultMutableTreeNode errorTreeNode = (DefaultMutableTreeNode) recordTreeNode.getChildAt(0);
+                            AssertionResult errorTreeNodeUserObject = (AssertionResult) errorTreeNode.getUserObject();
+                            record.failureMessage = errorTreeNodeUserObject.getFailureMessage();
+                            record.HasError = errorTreeNodeUserObject.isFailure();
+                            threadGroup.HasError = errorTreeNodeUserObject.isFailure();
+                        }
                     }
-                } else if (userObject instanceof AssertionResult) {
-                    AssertionResult assertionResult = (AssertionResult) userObject;
-                    String failureMessage = assertionResult.getFailureMessage();
-                    childReportVO.setName(failureMessage);
-                    childReportVO.setErrorMsg(failureMessage);
-                    childReportVO.setSuccessful(false);
                 }
             }
+            summary.FeatureCount += featureSet.size();
         }
+        return reportVO;
     }
-
 
     private Object getSelectedObject() {
         Object oldSelectedElement;

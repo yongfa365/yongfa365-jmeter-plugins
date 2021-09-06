@@ -4,83 +4,42 @@ import java.util.List;
 
 public class ReportVO {
 
-    /**
-     * id用於控制動態id
-     */
-    private String id;
+    public List<ThreadGroup> items;
+    public Summary summary;
 
-    /**
-     * 用於控制動態id
-     */
-    private String parentId;
-
-    /**
-     * 任务名称
-     */
-    private String name;
-
-    /**
-     * 是否成功
-     */
-    private boolean successful;
-
-    /**
-     * 错误信息
-     */
-    private String errorMsg;
-
-    /**
-     * 子节点
-     */
-    private List<ReportVO> childs;
-
-
-    public String getId() {
-        return id;
+    public static class Summary {
+        public int RequestCount;
+        public int FeatureCount;
+        public int ErrorCount;
+        public int MockCount;
+        public int UrlCount;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public static class ThreadGroup {
+        public String Name;
+        public List<Record> Steps;
+        public boolean HasError;
+
     }
 
-    public String getParentId() {
-        return parentId;
+    public static class Record {
+        public String timeStamp;
+        public String elapsed;
+        public String label;
+        public String responseCode;
+        public String responseMessage;
+        public String threadName;
+        public String dataType;
+        public String success;
+        public String failureMessage;
+        public String bytes;
+        public String sentBytes;
+        public String grpThreads;
+        public String allThreads;
+        public String URL;
+        public String Latency;
+        public String IdleTime;
+        public String Connect;
+        public boolean HasError;
     }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public boolean isSuccessful() {
-        return successful;
-    }
-
-    public void setSuccessful(boolean successful) {
-        this.successful = successful;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    public List<ReportVO> getChilds() {
-        return childs;
-    }
-
-    public void setChilds(List<ReportVO> childs) {
-        this.childs = childs;
-    }
-
 }

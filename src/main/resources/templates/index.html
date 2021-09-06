@@ -1,199 +1,64 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Jmeter-Test</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
+﻿<script src="http://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+<script src="http://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/index.min.js"></script>
+<link rel='stylesheet' href='http://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/theme-chalk/index.min.css'
+      type='text/css'/>
+<style>
+    * {
+        font-size: 16px;
+    }
 
-<div class="panel-group" id="#ROOT">
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#ROOT"
-               href="#reportVO-SampleResultIndex0">
-                <span style="color:red" class="glyphicon glyphicon-remove"> JsonPath Assertion Demo 2-1</span>
-            </a>
-        </h4>
-    </div>
-    <div id="reportVO-SampleResultIndex0" class="panel-collapse collapse in">
-        <div class="panel-body">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#reportVO-SampleResultIndex0"
-                       href="#reportVO-SampleResultIndex00">
-                        <span style="color:red" class="glyphicon glyphicon-remove"> is asc fail</span>
-                    </a>
-                </h4>
-            </div>
-            <div id="reportVO-SampleResultIndex00" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <div id="reportVO-SampleResultIndex000" class="panel-collapse collapse in">
-                        <div class="panel-body">
-<span style="color:red" class="glyphicon glyphicon-remove">
-【expected】is asc
-[2021-06-13,2021-07-13,2021-12-13]
+    .el-collapse-item__header {
+        height: 30px
+    }
+</style>
+<div id="app">
+    <el-collapse accordion>
+        <el-tag effect="dark">请求数：{{summary.RequestCount}}</el-tag>
+        <el-tag type="success" effect="dark">场景数：{{summary.FeatureCount}}</el-tag>
+        <el-tag type="danger" effect="dark">错误数：{{summary.ErrorCount}}</el-tag>
+        <el-tag type="info" effect="dark">Mock次数：{{summary.MockCount}}</el-tag>
+        <el-tag type="success" effect="dark">被测试的Url数：{{summary.UrlCount}}</el-tag>
+        <el-collapse-item v-for="item in items">
+            <template slot="title">
+                <div v-if="item.HasError" class="header-icon el-icon-error" style="color:red">{{item.Name}}</div>
+                <div v-if="!item.HasError" class="header-icon el-icon-success" style="color:green">{{item.Name}}</div>
+            </template>
 
-【actual】:
-[2021-12-13,2021-06-13,2021-07-13]</span>
+            <div v-for="step in item.Steps" style="padding-left:20px">
+                <div v-if="!step.HasError" class="header-icon el-icon-success" style="color:green"> {{step.label}}</div>
+                <el-collapse v-if="step.HasError" accordion>
+                    <el-collapse-item>
+                        <template slot="title">
+                            <div class="header-icon el-icon-error" style="color:red"> {{step.label}}</div>
+                        </template>
+
+                        <div style="padding-left:20px">
+                            <div style="color:red" v-html="msg(step.failureMessage)"></div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex01" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> is asc ok</span>
-                </div>
-            </div>
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#reportVO-SampleResultIndex0"
-                       href="#reportVO-SampleResultIndex02">
-                        <span style="color:red" class="glyphicon glyphicon-remove"> is desc fail</span>
-                    </a>
-                </h4>
-            </div>
-            <div id="reportVO-SampleResultIndex02" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <div id="reportVO-SampleResultIndex020" class="panel-collapse collapse in">
-                        <div class="panel-body">
-<span style="color:red" class="glyphicon glyphicon-remove">
-【expected】is desc
-[2021-12-13,2021-07-13,2021-06-13]
 
-【actual】:
-[2021-12-13,2021-06-13,2021-07-13]</span>
-                        </div>
-                    </div>
-                </div>
+                    </el-collapse-item>
+                </el-collapse>
             </div>
-            <div id="reportVO-SampleResultIndex03" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> is desc ok</span>
-                </div>
-            </div>
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#reportVO-SampleResultIndex0"
-                       href="#reportVO-SampleResultIndex04">
-                        <span style="color:red" class="glyphicon glyphicon-remove"> all match fail</span>
-                    </a>
-                </h4>
-            </div>
-            <div id="reportVO-SampleResultIndex04" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <div id="reportVO-SampleResultIndex040" class="panel-collapse collapse in">
-                        <div class="panel-body">
-<span style="color:red" class="glyphicon glyphicon-remove">
-【expected】all match
-21.+13
 
-【actual】:
-["2021-12-13","2021-06-13","2021-07-13"]</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex05" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> all match ok</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex06" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> any match ok</span>
-                </div>
-            </div>
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#reportVO-SampleResultIndex0"
-                       href="#reportVO-SampleResultIndex07">
-                        <span style="color:red" class="glyphicon glyphicon-remove"> jp@gc - Dummy Sampler</span>
-                    </a>
-                </h4>
-            </div>
-            <div id="reportVO-SampleResultIndex07" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <div id="reportVO-SampleResultIndex070" class="panel-collapse collapse in">
-                        <div class="panel-body">
-<span style="color:red" class="glyphicon glyphicon-remove">
-【expected】any match
-2021-06-13
+        </el-collapse-item>
 
-【actual】:
-[]</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="panel-heading">
-        <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#ROOT"
-               href="#reportVO-SampleResultIndex1">
-                <span style="color:green" class="glyphicon glyphicon-ok"> Markdown Demo 1-1</span>
-            </a>
-        </h4>
-    </div>
-    <div id="reportVO-SampleResultIndex1" class="panel-collapse collapse in">
-        <div class="panel-body">
-            <div id="reportVO-SampleResultIndex10" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> add test : 1+2=3  ok</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex11" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> add test : -1+2=1  ok</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex12" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> add test : 1+2=3  ok</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex13" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> add test : -1+-1=-2  ok</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex14" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> add test : 1+-2=-1  ok</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex15" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green"
-                          class="glyphicon glyphicon-ok"> Degug111 yongfa365--xx1x--valid data</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex16" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> Degug111 yongfa111--123455--username not exist</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex17" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> Degug111 yongfa222--xx3x--password not exist</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex18" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> Degug222  haha--abc123--valid data</span>
-                </div>
-            </div>
-            <div id="reportVO-SampleResultIndex19" class="panel-collapse collapse in">
-                <div class="panel-body">
-                    <span style="color:green" class="glyphicon glyphicon-ok"> Degug222  ooo222--******--password not exist</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    </el-collapse>
 </div>
+<script src="data.js"></script>
+<script>
+    Vue.prototype.msg = function (msg) {
+        if (msg == null) {
+            return '';
+        }
+        return msg.replace(/\n/gi, "<br>")
+    };
 
-</body>
-</html>
+    new Vue({
+        el: "#app",
+        data: {
+            summary: data.summary,
+            items: data.items
+        },
+    });
+
+</script>
