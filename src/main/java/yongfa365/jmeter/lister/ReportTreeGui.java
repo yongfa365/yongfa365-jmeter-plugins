@@ -244,7 +244,7 @@ public class ReportTreeGui extends AbstractVisualizer
             ReportVO reportVOs = getReportVOs(root);
 
             String reportVOsStr = JSONValue.toJSONString(reportVOs);
-            System.out.println(reportVOsStr);
+//            System.out.println(reportVOsStr);
             log.info(reportVOsStr);
 
             // 创建基于文件的输出流
