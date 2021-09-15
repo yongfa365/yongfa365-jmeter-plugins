@@ -2,7 +2,6 @@ package yongfa365.jmeter.result;
 
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.visualizers.gui.AbstractListenerGui;
-import yongfa365.jmeter.util.JMeterPluginsUtils;
 
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -13,7 +12,7 @@ public class FlexibleFileWriterTestGui extends AbstractListenerGui implements Cl
 
     @Override
     public String getStaticLabel() {
-        return JMeterPluginsUtils.prefixLabel("FlexibleFileWriterTestGui");
+        return "FlexibleFileWriterTestGui";
     }
 
     @Override
