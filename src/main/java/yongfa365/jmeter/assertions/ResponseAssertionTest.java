@@ -274,17 +274,6 @@ public class ResponseAssertionTest extends AbstractScopedAssertion implements Se
      * @return an instance of AssertionResult
      */
     private AssertionResult evaluateResponse(SampleResult response) {
-        if (response != null) {
-            System.out.println("***************************ResponseAssertionTest start*********************************");
-            System.out.println("threadName:" + response.getThreadName());
-            System.out.println("label:" + response.getSampleLabel());
-            System.out.println("url:" + response.getUrlAsString());
-            System.out.println("responseCode:" + response.getResponseCode());
-            System.out.println("responseMessage:" + response.getResponseMessage());
-            System.out.println("FirstAssertionFailureMessage:" + response.getFirstAssertionFailureMessage());
-            System.out.println("errorCount:" + response.getErrorCount());
-            System.out.println("****************************ResponseAssertionTest end*******************************");
-        }
         AssertionResult result = new AssertionResult(getName());
 
         if (getAssumeSuccess()) {

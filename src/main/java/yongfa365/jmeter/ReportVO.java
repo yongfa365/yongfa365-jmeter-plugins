@@ -1,11 +1,12 @@
 package yongfa365.jmeter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReportVO {
 
-    public List<ThreadGroup> items;
-    public Summary summary;
+    public List<ThreadGroup> items = new ArrayList<>();
+    public Summary summary = new Summary();
 
     public static class Summary {
         public int RequestCount;

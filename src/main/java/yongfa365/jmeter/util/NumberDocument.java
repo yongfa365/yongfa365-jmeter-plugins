@@ -1,9 +1,9 @@
 package yongfa365.jmeter.util;
 
-import java.awt.Toolkit;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+import java.awt.*;
 
 public class NumberDocument extends PlainDocument {
     public NumberDocument() {
@@ -26,4 +26,5 @@ public class NumberDocument extends PlainDocument {
             return false;
         }
     }
+
 }
