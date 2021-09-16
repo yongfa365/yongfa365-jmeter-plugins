@@ -142,8 +142,7 @@
           <boolProp name="SUCCESFULL">true</boolProp>
           <stringProp name="RESPONSE_CODE">200</stringProp>
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
           <stringProp name="RESPONSE_DATA">[
 {&quot;goTime&quot;:&quot;2021-12-13&quot;},
 {&quot;goTime&quot;:&quot;2021-06-13&quot;},
@@ -159,15 +158,15 @@ without actual network activity. This helps debugging tests.</stringProp>
           <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">$..goTime</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">true</boolProp>
             <boolProp name="IS_ASC">true</boolProp>
             <boolProp name="IS_DESC">false</boolProp>
             <boolProp name="IS_ALL_MATCH">true</boolProp>
             <boolProp name="IS_ANY_MATCH">false</boolProp>
             <boolProp name="IS_USE_MATCH">false</boolProp>
+            <boolProp name="IS_USE_SIZE">false</boolProp>
+            <stringProp name="MIN_COUNT"></stringProp>
+            <stringProp name="MAX_COUNT"></stringProp>
           </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
           <hashTree/>
         </hashTree>
@@ -176,8 +175,7 @@ without actual network activity. This helps debugging tests.</stringProp>
           <boolProp name="SUCCESFULL">true</boolProp>
           <stringProp name="RESPONSE_CODE">200</stringProp>
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
           <stringProp name="RESPONSE_DATA">[
 {&quot;goTime&quot;:&quot;2021-06-13&quot;},
 {&quot;goTime&quot;:&quot;2021-07-13&quot;},
@@ -193,15 +191,15 @@ without actual network activity. This helps debugging tests.</stringProp>
           <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">$..goTime</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">true</boolProp>
             <boolProp name="IS_ASC">true</boolProp>
             <boolProp name="IS_DESC">false</boolProp>
             <boolProp name="IS_ALL_MATCH">true</boolProp>
             <boolProp name="IS_ANY_MATCH">false</boolProp>
             <boolProp name="IS_USE_MATCH">false</boolProp>
+            <boolProp name="IS_USE_SIZE">false</boolProp>
+            <stringProp name="MIN_COUNT"></stringProp>
+            <stringProp name="MAX_COUNT"></stringProp>
           </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
           <hashTree/>
         </hashTree>
@@ -210,8 +208,7 @@ without actual network activity. This helps debugging tests.</stringProp>
           <boolProp name="SUCCESFULL">true</boolProp>
           <stringProp name="RESPONSE_CODE">200</stringProp>
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
           <stringProp name="RESPONSE_DATA">[
 {&quot;goTime&quot;:&quot;2021-12-13&quot;},
 {&quot;goTime&quot;:&quot;2021-06-13&quot;},
@@ -227,15 +224,15 @@ without actual network activity. This helps debugging tests.</stringProp>
           <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">$..goTime</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">true</boolProp>
             <boolProp name="IS_ASC">false</boolProp>
             <boolProp name="IS_DESC">true</boolProp>
             <boolProp name="IS_ALL_MATCH">true</boolProp>
             <boolProp name="IS_ANY_MATCH">false</boolProp>
             <boolProp name="IS_USE_MATCH">false</boolProp>
+            <boolProp name="IS_USE_SIZE">false</boolProp>
+            <stringProp name="MIN_COUNT"></stringProp>
+            <stringProp name="MAX_COUNT"></stringProp>
           </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
           <hashTree/>
         </hashTree>
@@ -244,8 +241,7 @@ without actual network activity. This helps debugging tests.</stringProp>
           <boolProp name="SUCCESFULL">true</boolProp>
           <stringProp name="RESPONSE_CODE">200</stringProp>
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
           <stringProp name="RESPONSE_DATA">[
 {&quot;goTime&quot;:&quot;2021-12-13&quot;},
 {&quot;goTime&quot;:&quot;2021-07-13&quot;},
@@ -261,15 +257,15 @@ without actual network activity. This helps debugging tests.</stringProp>
           <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">$..goTime</stringProp>
             <stringProp name="EXPECTED_VALUE"></stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">false</boolProp>
             <boolProp name="IS_ASC">false</boolProp>
             <boolProp name="IS_DESC">true</boolProp>
             <boolProp name="IS_ALL_MATCH">true</boolProp>
             <boolProp name="IS_ANY_MATCH">false</boolProp>
             <boolProp name="IS_USE_MATCH">false</boolProp>
+            <boolProp name="IS_USE_SIZE">false</boolProp>
+            <stringProp name="MIN_COUNT"></stringProp>
+            <stringProp name="MAX_COUNT"></stringProp>
           </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
           <hashTree/>
         </hashTree>
@@ -278,8 +274,7 @@ without actual network activity. This helps debugging tests.</stringProp>
           <boolProp name="SUCCESFULL">true</boolProp>
           <stringProp name="RESPONSE_CODE">200</stringProp>
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
           <stringProp name="RESPONSE_DATA">[
 {&quot;goTime&quot;:&quot;2021-12-13&quot;},
 {&quot;goTime&quot;:&quot;2021-06-13&quot;},
@@ -295,15 +290,15 @@ without actual network activity. This helps debugging tests.</stringProp>
           <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">$..goTime</stringProp>
             <stringProp name="EXPECTED_VALUE">21.+13</stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">true</boolProp>
             <boolProp name="IS_ASC">false</boolProp>
             <boolProp name="IS_DESC">false</boolProp>
             <boolProp name="IS_ALL_MATCH">true</boolProp>
             <boolProp name="IS_ANY_MATCH">false</boolProp>
             <boolProp name="IS_USE_MATCH">true</boolProp>
+            <boolProp name="IS_USE_SIZE">false</boolProp>
+            <stringProp name="MIN_COUNT"></stringProp>
+            <stringProp name="MAX_COUNT"></stringProp>
           </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
           <hashTree/>
         </hashTree>
@@ -312,8 +307,7 @@ without actual network activity. This helps debugging tests.</stringProp>
           <boolProp name="SUCCESFULL">true</boolProp>
           <stringProp name="RESPONSE_CODE">200</stringProp>
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
           <stringProp name="RESPONSE_DATA">[
 {&quot;goTime&quot;:&quot;2021-12-13&quot;},
 {&quot;goTime&quot;:&quot;2021-06-13&quot;},
@@ -329,15 +323,15 @@ without actual network activity. This helps debugging tests.</stringProp>
           <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">$..goTime</stringProp>
             <stringProp name="EXPECTED_VALUE">2021.+13</stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">true</boolProp>
             <boolProp name="IS_ASC">false</boolProp>
             <boolProp name="IS_DESC">false</boolProp>
             <boolProp name="IS_ALL_MATCH">true</boolProp>
             <boolProp name="IS_ANY_MATCH">false</boolProp>
             <boolProp name="IS_USE_MATCH">true</boolProp>
+            <boolProp name="IS_USE_SIZE">false</boolProp>
+            <stringProp name="MIN_COUNT"></stringProp>
+            <stringProp name="MAX_COUNT"></stringProp>
           </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
           <hashTree/>
         </hashTree>
@@ -346,8 +340,7 @@ without actual network activity. This helps debugging tests.</stringProp>
           <boolProp name="SUCCESFULL">true</boolProp>
           <stringProp name="RESPONSE_CODE">200</stringProp>
           <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
-          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responses
-without actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
           <stringProp name="RESPONSE_DATA">[
 {&quot;goTime&quot;:&quot;2021-12-13&quot;},
 {&quot;goTime&quot;:&quot;2021-06-13&quot;},
@@ -363,15 +356,85 @@ without actual network activity. This helps debugging tests.</stringProp>
           <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
             <stringProp name="JSON_PATH">$..goTime</stringProp>
             <stringProp name="EXPECTED_VALUE">2021-06-13</stringProp>
-            <boolProp name="JSONVALIDATION">true</boolProp>
-            <boolProp name="EXPECT_NULL">false</boolProp>
-            <boolProp name="INVERT">false</boolProp>
             <boolProp name="ISREGEX">false</boolProp>
             <boolProp name="IS_ASC">false</boolProp>
             <boolProp name="IS_DESC">false</boolProp>
             <boolProp name="IS_ALL_MATCH">false</boolProp>
             <boolProp name="IS_ANY_MATCH">true</boolProp>
             <boolProp name="IS_USE_MATCH">true</boolProp>
+            <boolProp name="IS_USE_SIZE">false</boolProp>
+            <stringProp name="MIN_COUNT"></stringProp>
+            <stringProp name="MAX_COUNT"></stringProp>
+          </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
+          <hashTree/>
+        </hashTree>
+        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="JsonPath result size fail" enabled="true">
+          <boolProp name="WAITING">true</boolProp>
+          <boolProp name="SUCCESFULL">true</boolProp>
+          <stringProp name="RESPONSE_CODE">200</stringProp>
+          <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_DATA">[
+{&quot;goTime&quot;:&quot;2021-12-13&quot;},
+{&quot;goTime&quot;:&quot;2021-06-13&quot;},
+{&quot;goTime&quot;:&quot;2021-07-13&quot;}
+]</stringProp>
+          <stringProp name="RESPONSE_TIME">0</stringProp>
+          <stringProp name="LATENCY">0</stringProp>
+          <stringProp name="CONNECT">0</stringProp>
+          <stringProp name="URL"></stringProp>
+          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
+        </kg.apc.jmeter.samplers.DummySampler>
+        <hashTree>
+          <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
+            <stringProp name="JSON_PATH">$..goTime</stringProp>
+            <stringProp name="EXPECTED_VALUE"></stringProp>
+            <boolProp name="ISREGEX">false</boolProp>
+            <boolProp name="IS_ASC">false</boolProp>
+            <boolProp name="IS_DESC">false</boolProp>
+            <boolProp name="IS_ALL_MATCH">false</boolProp>
+            <boolProp name="IS_ANY_MATCH">true</boolProp>
+            <boolProp name="IS_USE_MATCH">false</boolProp>
+            <boolProp name="IS_USE_SIZE">true</boolProp>
+            <stringProp name="BEGIN_SIZE">0</stringProp>
+            <stringProp name="END_SIZE">1</stringProp>
+            <stringProp name="MIN_COUNT">10</stringProp>
+            <stringProp name="MAX_COUNT">100</stringProp>
+          </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
+          <hashTree/>
+        </hashTree>
+        <kg.apc.jmeter.samplers.DummySampler guiclass="kg.apc.jmeter.samplers.DummySamplerGui" testclass="kg.apc.jmeter.samplers.DummySampler" testname="JsonPath result size ok" enabled="true">
+          <boolProp name="WAITING">true</boolProp>
+          <boolProp name="SUCCESFULL">true</boolProp>
+          <stringProp name="RESPONSE_CODE">200</stringProp>
+          <stringProp name="RESPONSE_MESSAGE">OK</stringProp>
+          <stringProp name="REQUEST_DATA">Dummy Sampler used to simulate requests and responseswithout actual network activity. This helps debugging tests.</stringProp>
+          <stringProp name="RESPONSE_DATA">[
+{&quot;goTime&quot;:&quot;2021-12-13&quot;},
+{&quot;goTime&quot;:&quot;2021-06-13&quot;},
+{&quot;goTime&quot;:&quot;2021-07-13&quot;}
+]</stringProp>
+          <stringProp name="RESPONSE_TIME">0</stringProp>
+          <stringProp name="LATENCY">0</stringProp>
+          <stringProp name="CONNECT">0</stringProp>
+          <stringProp name="URL"></stringProp>
+          <stringProp name="RESULT_CLASS">org.apache.jmeter.samplers.SampleResult</stringProp>
+        </kg.apc.jmeter.samplers.DummySampler>
+        <hashTree>
+          <yongfa365.jmeter.assertions.JSONPathAssertionPlus guiclass="yongfa365.jmeter.assertions.gui.JSONPathAssertionPlusGui" testclass="yongfa365.jmeter.assertions.JSONPathAssertionPlus" testname="JsonPath Assertion" enabled="true">
+            <stringProp name="JSON_PATH">$..goTime</stringProp>
+            <stringProp name="EXPECTED_VALUE"></stringProp>
+            <boolProp name="ISREGEX">false</boolProp>
+            <boolProp name="IS_ASC">false</boolProp>
+            <boolProp name="IS_DESC">false</boolProp>
+            <boolProp name="IS_ALL_MATCH">false</boolProp>
+            <boolProp name="IS_ANY_MATCH">true</boolProp>
+            <boolProp name="IS_USE_MATCH">false</boolProp>
+            <boolProp name="IS_USE_SIZE">true</boolProp>
+            <stringProp name="BEGIN_SIZE">1</stringProp>
+            <stringProp name="END_SIZE">3</stringProp>
+            <stringProp name="MIN_COUNT">1</stringProp>
+            <stringProp name="MAX_COUNT">3</stringProp>
           </yongfa365.jmeter.assertions.JSONPathAssertionPlus>
           <hashTree/>
         </hashTree>
@@ -413,6 +476,12 @@ without actual network activity. This helps debugging tests.</stringProp>
         </ResultCollector>
         <hashTree/>
       </hashTree>
+      <yongfa365.jmeter.result.ConsoleAndHtmlReport guiclass="yongfa365.jmeter.result.gui.ConsoleAndHtmlReportGui" testclass="yongfa365.jmeter.result.ConsoleAndHtmlReport" testname="Console And Html Report" enabled="true">
+        <boolProp name="IS_DEFAULT">true</boolProp>
+        <boolProp name="IS_CUSTOM">false</boolProp>
+        <stringProp name="ROOT_PATH"></stringProp>
+      </yongfa365.jmeter.result.ConsoleAndHtmlReport>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>

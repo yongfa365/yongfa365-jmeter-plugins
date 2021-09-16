@@ -1,4 +1,4 @@
-# Markdown Table Data-driven Controller
+# Feature 1: Markdown Table Data-driven Controller
 
 ## Data-driven Test Comparison
 
@@ -44,6 +44,11 @@ username     | password | remark
 ```
 
 
-# jsonPath Assertion
+# Feature 2: jsonPath Assertion
 ![](JsonPathAssertion.png)
-![](JsonPathAssertion2.png)
+![Assert Sort](JsonPathAssertion2.png)
+![Assert JsonPath Result Count](JsonPathAssertion3.png)
+
+# Feature 3: Console And Html Report
+Test Plan-->Add-->Listener-->Console And Html Report
+![Console And Html Report](ConsoleAndHtmlReport.png)

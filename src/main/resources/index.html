@@ -1,0 +1,64 @@
+﻿<script src="http://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+<script src="http://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/index.min.js"></script>
+<link rel='stylesheet' href='http://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/theme-chalk/index.min.css'
+      type='text/css'/>
+<style>
+    * {
+        font-size: 16px;
+    }
+
+    .el-collapse-item__header {
+        height: 30px
+    }
+</style>
+<div id="app">
+    <el-collapse accordion>
+        <el-tag effect="dark">请求数：{{summary.RequestCount}}</el-tag>
+        <el-tag type="success" effect="dark">场景数：{{summary.FeatureCount}}</el-tag>
+        <el-tag type="danger" effect="dark">错误数：{{summary.ErrorCount}}</el-tag>
+        <el-tag type="info" effect="dark">Mock次数：{{summary.MockCount}}</el-tag>
+        <el-tag type="success" effect="dark">被测试的Url数：{{summary.UrlCount}}</el-tag>
+        <el-collapse-item v-for="item in items">
+            <template slot="title">
+                <div v-if="item.HasError" class="header-icon el-icon-error" style="color:red">{{item.Name}}</div>
+                <div v-if="!item.HasError" class="header-icon el-icon-success" style="color:green">{{item.Name}}</div>
+            </template>
+
+            <div v-for="step in item.Steps" style="padding-left:20px">
+                <div v-if="!step.HasError" class="header-icon el-icon-success" style="color:green"> {{step.label}}</div>
+                <el-collapse v-if="step.HasError" accordion>
+                    <el-collapse-item>
+                        <template slot="title">
+                            <div class="header-icon el-icon-error" style="color:red"> {{step.label}}</div>
+                        </template>
+
+                        <div style="padding-left:20px">
+                            <div style="color:red" v-html="msg(step.failureMessage)"></div>
+                        </div>
+
+                    </el-collapse-item>
+                </el-collapse>
+            </div>
+
+        </el-collapse-item>
+
+    </el-collapse>
+</div>
+<script src="data.js"></script>
+<script>
+    Vue.prototype.msg = function (msg) {
+        if (msg == null) {
+            return '';
+        }
+        return msg.replace(/\n/gi, "<br>")
+    };
+
+    new Vue({
+        el: "#app",
+        data: {
+            summary: data.summary,
+            items: data.items
+        },
+    });
+
+</script>

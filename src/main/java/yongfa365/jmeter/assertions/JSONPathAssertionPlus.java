@@ -3,6 +3,7 @@ package yongfa365.jmeter.assertions;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.apache.commons.lang3.compare.ComparableUtils;
 import org.apache.jmeter.assertions.Assertion;
 import org.apache.jmeter.assertions.AssertionResult;
 import org.apache.jmeter.samplers.SampleResult;
@@ -25,11 +26,16 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
     private static final long serialVersionUID = 123123123123456L;
     public static final String JSONPATH = "JSON_PATH";
     public static final String EXPECTEDVALUE = "EXPECTED_VALUE";
-    public static final String ISREGEX = "ISREGEX";
+
+    public static final String IS_DEFAULT = "IS_ASC";
+    public static final String IS_DESC = "IS_DESC";
+
+    public static final String IS_CUSTOM = "IS_USE_SIZE";
+    public static final String ROOT_PATH = "MIN_COUNT";
+    public static final String MAX_COUNT = "MAX_COUNT";
 
     public static final String IS_USE_MATCH = "IS_USE_MATCH";
-    public static final String IS_ASC = "IS_ASC";
-    public static final String IS_DESC = "IS_DESC";
+    public static final String ISREGEX = "ISREGEX";
     public static final String IS_ALL_MATCH = "IS_ALL_MATCH";
     public static final String IS_ANY_MATCH = "IS_ANY_MATCH";
 
@@ -81,13 +87,24 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
     }
 
     public boolean isAsc() {
-        return getPropertyAsBoolean(IS_ASC, false);
+        return getPropertyAsBoolean(IS_DEFAULT, false);
     }
 
     public boolean isDesc() {
         return getPropertyAsBoolean(IS_DESC, false);
     }
 
+    public boolean isUseSize() {
+        return getPropertyAsBoolean(IS_CUSTOM, false);
+    }
+
+    public int getMinCount() {
+        return getPropertyAsInt(ROOT_PATH, Integer.MIN_VALUE);
+    }
+
+    public int getMaxCount() {
+        return getPropertyAsInt(MAX_COUNT, Integer.MAX_VALUE);
+    }
 
     private void doAssert(String jsonString) {
         Object value = JsonPath.read(jsonString, getJsonPath());
@@ -96,6 +113,8 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
             assertIsAsc(value);
         } else if (isDesc()) {
             assertIsDesc(value);
+        } else if (isUseSize()) {
+            assertJsonPathResultSize((JSONArray) value);
         } else {
             if (value instanceof JSONArray) {
                 arrayMatched((JSONArray) value);
@@ -107,6 +126,23 @@ public class JSONPathAssertionPlus extends AbstractTestElement implements Serial
             }
         }
 
+    }
+
+    /**
+     * 断言size
+     *
+     * @param value
+     */
+    public void assertJsonPathResultSize(JSONArray value) {
+        int begin = getMinCount();
+        int end = getMaxCount();
+        int actual = value.size();
+        if (!ComparableUtils.between(begin, end).test(actual)) {
+            String actualStr = value.stream().map(p -> objectToString(p))
+                    .collect(Collectors.joining(",", "[", "]"));
+            String msg = String.format("\n【JsonPath Result】\n%s\n【expected】\n%s <= count <= %s\n【actual】\n%s", actualStr, begin, end, actual);
+            throw new RuntimeException(msg);
+        }
     }
 
     private void assertIsAsc(Object input) {
