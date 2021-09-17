@@ -1,17 +1,9 @@
 package yongfa365.jmeter.result;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.google.errorprone.annotations.Var;
-import net.minidev.json.JSONStyle;
-import net.minidev.json.JSONUtil;
-import net.minidev.json.JSONValue;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.jmeter.engine.util.NoThreadClone;
-import org.apache.jmeter.gui.GuiPackage;
-import org.apache.jmeter.report.core.JsonUtil;
 import org.apache.jmeter.reporters.AbstractListenerElement;
 import org.apache.jmeter.samplers.Remoteable;
 import org.apache.jmeter.samplers.SampleEvent;
@@ -22,18 +14,14 @@ import org.apache.jmeter.testelement.TestStateListener;
 import org.apache.jmeter.util.JMeterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import yongfa365.jmeter.assertions.JSONPathAssertionPlus;
-import yongfa365.jmeter.utils.JsonUtils;
+import yongfa365.jmeter.utils.MyUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.text.DecimalFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ConsoleAndHtmlReport
         extends AbstractListenerElement
@@ -177,7 +165,7 @@ public class ConsoleAndHtmlReport
             }
         }
         summary.FeatureCount = featureSet.size();
-        summary.UrlCount=urlSet.size();
+        summary.UrlCount = urlSet.size();
         return reportVO;
     }
 
@@ -229,13 +217,15 @@ public class ConsoleAndHtmlReport
             String rootPath = getRootPath();
             String baseName = FilenameUtils.getBaseName(testPlanFile);
             String reportPath = rootPath + "\\" + baseName;
-            System.out.println(reportPath);
             Files.createDirectories(Paths.get(reportPath));
 
             String index = JMeterUtils.getResourceFileAsText("index.html");
-            Files.write(Paths.get(reportPath, "index.html"), index.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-            String result = "let data = " + JsonUtils.toJson(reportVO);
-            Files.write(Paths.get(reportPath, "data.js"), result.getBytes(StandardCharsets.UTF_8), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
+            MyUtils.writeToFile(Paths.get(reportPath, "index.html"), index);
+
+            String result = "let data = " + MyUtils.toJson(reportVO);
+            MyUtils.writeToFile(Paths.get(reportPath, "data.js"), result);
+
+            System.out.printf("\n【html report】%s\n", reportPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
