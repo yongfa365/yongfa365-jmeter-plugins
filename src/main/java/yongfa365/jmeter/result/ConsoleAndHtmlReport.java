@@ -180,35 +180,27 @@ public class ConsoleAndHtmlReport
             reportVO.items.forEach(threadGroup -> {
                 String name = threadGroup.Name;
                 if (threadGroup.HasError) {
-                    stringBuilder.append("[✖]").append(name).append("\r\n");
+                    stringBuilder.append("[×]").append(name).append("\r\n");
                 } else {
-                    stringBuilder.append("[✔]").append(name).append("\r\n");
+                    stringBuilder.append("[√]").append(name).append("\r\n");
                 }
                 if (threadGroup.Steps != null) {
                     threadGroup.Steps.forEach(record -> {
                         String label = record.label;
                         if (record.HasError) {
-                            stringBuilder.append("   [✖]").append(label).append("\r\n");
+                            stringBuilder.append("   [×]").append(label).append("\r\n");
                             stringBuilder.append("      ").append(StringUtils.trimToEmpty(record.failureMessage).replaceAll("\n", "\n          ")).append("\r\n");
                         } else {
-                            stringBuilder.append("   [✔]").append(label).append("\r\n");
+                            stringBuilder.append("   [√]").append(label).append("\r\n");
                         }
                     });
                 }
             });
 
-            outputToConsole(stringBuilder);
+            System.out.println(stringBuilder);
         }
     }
 
-    private void outputToConsole(StringBuilder sb) {
-        try {
-            PrintStream ps = new PrintStream(System.out, true, "UTF-8");
-            ps.println(sb);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void outputToHtml(ReportVO reportVO) {
         try {
