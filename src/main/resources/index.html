@@ -13,11 +13,11 @@
 </style>
 <div id="app">
     <el-collapse accordion>
-        <el-tag effect="dark">请求数：{{summary.RequestCount}}</el-tag>
-        <el-tag type="success" effect="dark">场景数：{{summary.FeatureCount}}</el-tag>
-        <el-tag type="danger" effect="dark">错误数：{{summary.ErrorCount}}</el-tag>
-        <el-tag type="info" effect="dark">Mock次数：{{summary.MockCount}}</el-tag>
-        <el-tag type="success" effect="dark">被测试的Url数：{{summary.UrlCount}}</el-tag>
+        <el-tag effect="dark">Request: {{summary.RequestCount}}</el-tag>
+        <el-tag type="success" effect="dark">Feature: {{summary.FeatureCount}}</el-tag>
+        <el-tag type="danger" effect="dark">Error: {{summary.ErrorCount}}</el-tag>
+        <el-tag type="info" effect="dark">Mock: {{summary.MockCount}}</el-tag>
+        <el-tag type="success" effect="dark">Url: {{summary.UrlCount}}</el-tag>
         <el-collapse-item v-for="item in items">
             <template slot="title">
                 <div v-if="item.HasError" class="header-icon el-icon-error" style="color:red">{{item.Name}}</div>
